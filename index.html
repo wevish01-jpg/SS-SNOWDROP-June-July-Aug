@@ -2,22 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>SS Snowdrop | Financial Reports 2026</title>
 <style>
 :root{
   --bg:#f4f7fb;--surface:#fff;--text:#102a43;--muted:#66788a;
   --primary:#1769aa;--primary2:#0b4779;--line:#dce6ef;
   --green:#16845b;--red:#c43d4b;--gold:#d98b16;
+  --ease:cubic-bezier(.16,.8,.28,1);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 button{font:inherit}
 .app{min-height:100vh}
+
+/* ---------- Mini sticky nav ---------- */
+.mini-nav{position:fixed;top:0;left:0;right:0;z-index:60;transform:translateY(-100%);transition:transform .4s var(--ease);background:rgba(9,42,74,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+.mini-nav.show{transform:translateY(0)}
+.mini-inner{max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 22px;gap:14px}
+.mini-brand{color:#fff;font-weight:850;font-size:14px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.mini-tabs{display:flex;gap:6px}
+.mini-tabs button{border:0;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);padding:7px 13px;border-radius:9px;cursor:pointer;font-weight:750;font-size:12.5px;transition:background .2s,color .2s}
+.mini-tabs button:hover{background:rgba(255,255,255,.16);color:#fff}
+.mini-tabs button.active{background:#fff;color:#0b4779}
+
+/* ---------- Hero ---------- */
 .hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#092f54 0%,#0d5689 55%,#1594b8 100%);color:#fff;padding:34px 6vw 70px}
 .hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.07)}
-.hero:before{width:430px;height:430px;right:-120px;top:-220px}.hero:after{width:280px;height:280px;left:-140px;bottom:-170px}
+.hero:before{width:430px;height:430px;right:-120px;top:-220px;animation:driftA 22s ease-in-out infinite}
+.hero:after{width:280px;height:280px;left:-140px;bottom:-170px;animation:driftB 26s ease-in-out infinite}
+@keyframes driftA{0%,100%{transform:translate(0,0)}50%{transform:translate(-18px,22px)}}
+@keyframes driftB{0%,100%{transform:translate(0,0)}50%{transform:translate(16px,-18px)}}
 .nav{position:relative;z-index:2;max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;gap:13px;align-items:center;font-weight:850;letter-spacing:.2px}
 .brand-icon{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:25px;border:1px solid rgba(255,255,255,.2)}
@@ -29,91 +45,190 @@ h1{font-size:clamp(34px,5vw,65px);line-height:1.02;margin:12px 0 17px;max-width:
 .hero-stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 .hero-stat{padding:11px 15px;border-radius:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:13px}
 .hero-stat strong{display:block;font-size:16px;color:#fff}
+
+/* hero load-in choreography */
+.reveal-in{opacity:0;transform:translateY(14px);animation:riseIn .7s var(--ease) forwards}
+.nav{opacity:0;animation:riseIn .6s var(--ease) forwards}
+.hero-inner .eyebrow{animation-delay:.05s}
+.hero-inner h1{animation-delay:.15s}
+.hero-inner p{animation-delay:.28s}
+.hero-stats .hero-stat{animation-delay:.4s}
+.hero-stats .hero-stat:nth-child(2){animation-delay:.48s}
+.hero-stats .hero-stat:nth-child(3){animation-delay:.56s}
+@keyframes riseIn{to{opacity:1;transform:none}}
+
 .main{max-width:1280px;margin:-35px auto 0;padding:0 22px 60px;position:relative;z-index:3}
-.selector{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:9px;display:flex;gap:8px;box-shadow:0 18px 45px rgba(20,53,80,.12);flex-wrap:wrap}
-.tab{flex:1;min-width:150px;border:0;background:transparent;color:#557087;padding:15px 17px;border-radius:15px;cursor:pointer;font-weight:800;transition:.2s}
-.tab:hover{background:#f0f6fa}.tab.active{background:#0d5d91;color:#fff;box-shadow:0 8px 20px rgba(13,93,145,.2)}
-.report{margin-top:22px;animation:fade .35s ease}
-@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.selector{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:9px;display:flex;gap:8px;box-shadow:0 18px 45px rgba(20,53,80,.12);flex-wrap:wrap;position:relative;opacity:0;animation:riseIn .6s var(--ease) forwards;animation-delay:.5s}
+.tab{flex:1;min-width:150px;border:0;background:transparent;color:#557087;padding:15px 17px;border-radius:15px;cursor:pointer;font-weight:800;transition:color .25s;position:relative;z-index:2}
+.tab:hover{color:#194d73}
+.tab.active{color:#fff}
+.tab:focus-visible,.action:focus-visible,.mini-tabs button:focus-visible{outline:2px solid #1594b8;outline-offset:2px}
+.tab-indicator{position:absolute;top:9px;bottom:9px;left:9px;border-radius:15px;background:#0d5d91;box-shadow:0 8px 20px rgba(13,93,145,.25);transition:transform .38s var(--ease),width .38s var(--ease);z-index:1}
+
+.report{margin-top:22px}
+.report.enter{animation:fadeSlide .45s var(--ease)}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .report-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:30px 2px 18px}
 .report-head h2{font-size:31px;margin:0 0 6px;letter-spacing:-.7px}
 .report-head p{margin:0;color:var(--muted)}
 .actions{display:flex;gap:9px;flex-wrap:wrap}
-.action{border:1px solid var(--line);background:#fff;color:#194d73;padding:10px 14px;border-radius:11px;cursor:pointer;font-weight:750}
-.action:hover{background:#f4f8fb}
+.action{border:1px solid var(--line);background:#fff;color:#194d73;padding:10px 14px;border-radius:11px;cursor:pointer;font-weight:750;transition:background .2s,transform .2s,box-shadow .2s}
+.action:hover{background:#f4f8fb;transform:translateY(-2px);box-shadow:0 6px 16px rgba(23,55,80,.1)}
+.action:active{transform:translateY(0)}
+
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 7px 24px rgba(23,55,80,.05)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 7px 24px rgba(23,55,80,.05);transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(23,55,80,.1)}
 .metric-label{font-size:12px;color:var(--muted);font-weight:750;text-transform:uppercase;letter-spacing:.35px}
-.metric{font-size:21px;font-weight:900;margin-top:8px;color:#114c75}
+.metric{font-size:21px;font-weight:900;margin-top:8px;color:#114c75;font-variant-numeric:tabular-nums}
 .metric.green{color:var(--green)}.metric.red{color:var(--red)}.metric.gold{color:var(--gold)}
+
 .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-top:16px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 7px 24px rgba(23,55,80,.05)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 7px 24px rgba(23,55,80,.05);opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.panel.revealed{opacity:1;transform:none}
 .panel-title{padding:15px 18px;font-weight:850;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
 .panel-title span{font-size:12px;color:var(--muted);font-weight:650}
 .panel-body{padding:18px}
 .summary{line-height:1.7;color:#486174;font-size:14px}
-table{width:100%;border-collapse:collapse;font-size:13px}
+
+.table-scroll{overflow-x:auto;margin:0 -18px;padding:0 18px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:460px}
 th,td{text-align:left;padding:11px 10px;border-bottom:1px solid #edf2f6}
 th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#698092;background:#f8fafc}
-td.num{text-align:right;white-space:nowrap;font-weight:750}
+td.num{text-align:right;white-space:nowrap;font-weight:750;font-variant-numeric:tabular-nums}
 tr:last-child td{border-bottom:0}.total td{font-weight:900;background:#f4f9fc}
-.progress{height:7px;background:#e9eff4;border-radius:99px;overflow:hidden;margin-top:7px}.progress i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#1769aa,#17a1bd)}
+tbody tr{transition:background .15s}
+tbody tr:hover td{background:#f7fbfd}
+
+.progress{height:7px;background:#e9eff4;border-radius:99px;overflow:hidden;margin-top:7px}
+.progress i{display:block;height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#1769aa,#17a1bd);transition:width 1s var(--ease)}
 .expense{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:12px 0;border-bottom:1px solid #edf2f6}.expense:last-child{border:0}
-.expense-name{font-weight:750}.expense-amount{font-weight:900;color:#b84442}.expense small{color:var(--muted)}
+.expense-name{font-weight:750}.expense-amount{font-weight:900;color:#b84442;font-variant-numeric:tabular-nums}.expense small{color:var(--muted)}
 .notice{margin-top:14px;padding:13px 14px;background:#eef8f5;border:1px solid #cceadd;border-radius:12px;color:#276550;font-size:12px;line-height:1.5}
+
 .comparison{margin-top:16px}
-.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;padding:18px}
-.compare-box{padding:17px;border-radius:14px;background:#f7fafc;border:1px solid var(--line)}
-.compare-box .month{font-weight:900;color:#15567e}.compare-box .big{font-size:23px;font-weight:900;margin:8px 0}.compare-box p{margin:0;color:var(--muted);font-size:12px}
-.footer{text-align:center;color:#75899a;font-size:12px;padding:30px 10px}
+.trend-wrap{padding:14px 18px 4px}
+.trend-svg{width:100%;height:auto;display:block;overflow:visible}
+.trend-area{opacity:0;transition:opacity 1s var(--ease) .3s}
+.panel.revealed .trend-area{opacity:1}
+.trend-line{fill:none;stroke:#0d5d91;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.trend-dot{fill:#fff;stroke:#0d5d91;stroke-width:3;opacity:0;transform-origin:center;transform-box:fill-box}
+.panel.revealed .trend-dot{animation:dotPop .5s var(--ease) forwards}
+@keyframes dotPop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+.trend-label{font-size:11px;fill:#7a90a3;font-weight:700}
+.trend-value{font-size:12px;fill:#0b4779;font-weight:800;opacity:0;transition:opacity .6s var(--ease) 1.1s}
+.panel.revealed .trend-value{opacity:1}
+
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;padding:8px 18px 18px}
+.compare-box{padding:17px;border-radius:14px;background:#f7fafc;border:1px solid var(--line);transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.compare-box:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(23,55,80,.08)}
+.compare-box .month{font-weight:900;color:#15567e}
+.compare-box .big{font-size:23px;font-weight:900;margin:8px 0;font-variant-numeric:tabular-nums}
+.compare-box p{margin:0;color:var(--muted);font-size:12px}
+
+.footer{text-align:center;color:#75899a;font-size:12px;padding:30px 10px;opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.footer.revealed{opacity:1;transform:none}
 .empty{padding:55px;text-align:center;color:var(--muted)}
+
 @media(max-width:1050px){.cards{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}}
-@media(max-width:700px){.hero{padding:24px 20px 60px}.hero-inner{margin-top:45px}.main{padding:0 12px 40px}.cards{grid-template-columns:1fr 1fr}.report-head{align-items:start;flex-direction:column}.selector{border-radius:18px}.tab{min-width:0}.compare-grid{grid-template-columns:1fr}}
-@media(max-width:460px){.cards{grid-template-columns:1fr}.brand .name{display:none}.hero p{font-size:15px}}
-@media print{.hero{padding:20px;color:#000;background:#fff}.hero p{color:#444}.selector,.actions{display:none}.main{margin:0}.report{display:block}.grid{grid-template-columns:1fr}}
+@media(max-width:700px){
+  .hero{padding:24px 20px 60px}
+  .hero-inner{margin-top:45px}
+  .main{padding:0 12px 40px}
+  .cards{grid-template-columns:1fr 1fr}
+  .report-head{align-items:start;flex-direction:column}
+  .selector{border-radius:18px}
+  .tab{min-width:0;padding:13px 10px;font-size:13.5px}
+  .compare-grid{grid-template-columns:1fr}
+  .mini-tabs button{padding:6px 10px;font-size:11.5px}
+  .mini-brand{font-size:12.5px}
+}
+@media(max-width:460px){
+  .cards{grid-template-columns:1fr}
+  .brand .name{display:none}
+  .hero p{font-size:15px}
+  .mini-brand span.full{display:none}
+  h1{letter-spacing:-1px}
+}
+@media(max-width:360px){
+  .hero{padding:20px 14px 50px}
+  .hero-stat{padding:9px 11px;font-size:12px}
+  .panel-body{padding:14px}
+  .report-head h2{font-size:25px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .hero:before,.hero:after{animation:none}
+}
+@media print{
+  .hero{padding:20px;color:#000;background:#fff}
+  .hero:before,.hero:after{display:none}
+  .hero p{color:#444}
+  .selector,.actions,.mini-nav{display:none}
+  .main{margin:0}
+  .panel{opacity:1!important;transform:none!important}
+  .grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <div class="app">
+
+<div class="mini-nav" id="miniNav" aria-hidden="true">
+  <div class="mini-inner">
+    <div class="mini-brand">🏢 <span class="full">SS Snowdrop</span></div>
+    <div class="mini-tabs" role="tablist" aria-label="Jump to month">
+      <button data-month="june" class="active">Jun</button>
+      <button data-month="july">Jul</button>
+      <button data-month="august">Aug</button>
+    </div>
+  </div>
+</div>
+
 <header class="hero">
   <nav class="nav">
     <div class="brand"><div class="brand-icon">🏢</div><div class="name">SS SNOWDROP</div></div>
     <div class="badge">Financial Reports · 2026</div>
   </nav>
   <div class="hero-inner">
-    <div class="eyebrow">Association Financial Dashboard</div>
-    <h1>Clear finances.<br>Stronger community.</h1>
-    <p>Monthly bank statement analysis for SS Snowdrop Apartment Allottees Welfare Association. Select a month below to view a clean, detailed financial report.</p>
+    <div class="eyebrow reveal-in">Association Financial Dashboard</div>
+    <h1 class="reveal-in">Clear finances.<br>Stronger community.</h1>
+    <p class="reveal-in">Monthly bank statement analysis for SS Snowdrop Apartment Allottees Welfare Association. Select a month below to view a clean, detailed financial report.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><strong>Jun · Jul · Aug</strong>2026 reports</div>
-      <div class="hero-stat"><strong>₹16.35L</strong>August closing balance</div>
-      <div class="hero-stat"><strong>114 flats</strong>August collection base</div>
+      <div class="hero-stat reveal-in"><strong>Jun · Jul · Aug</strong>2026 reports</div>
+      <div class="hero-stat reveal-in"><strong>₹16.35L</strong>August closing balance</div>
+      <div class="hero-stat reveal-in"><strong>114 flats</strong>August collection base</div>
     </div>
   </div>
 </header>
 
 <main class="main">
-  <div class="selector" role="tablist" aria-label="Monthly reports">
+  <div class="selector" role="tablist" aria-label="Monthly reports" id="selector">
+    <div class="tab-indicator" id="tabIndicator"></div>
     <button class="tab active" data-month="june">June 2026</button>
     <button class="tab" data-month="july">July 2026</button>
     <button class="tab" data-month="august">August 2026</button>
   </div>
   <div id="report" class="report"></div>
 
-  <section class="panel comparison">
+  <section class="panel comparison" id="trendPanel">
     <div class="panel-title">Three-month snapshot <span>June → August 2026</span></div>
+    <div class="trend-wrap" id="trendWrap"></div>
     <div class="compare-grid">
-      <div class="compare-box"><div class="month">June 2026</div><div class="big">₹14,68,158.72</div><p>Closing balance · Net change −₹42,097.16</p></div>
-      <div class="compare-box"><div class="month">July 2026</div><div class="big">₹14,53,224.10</div><p>Closing balance · Net change −₹14,934.62</p></div>
-      <div class="compare-box"><div class="month">August 2026</div><div class="big">₹16,35,036.94</div><p>Closing balance · Net change +₹1,81,812.84</p></div>
+      <div class="compare-box"><div class="month">June 2026</div><div class="big" data-target="1468158.72">₹0.00</div><p>Closing balance · Net change −₹42,097.16</p></div>
+      <div class="compare-box"><div class="month">July 2026</div><div class="big" data-target="1453224.10">₹0.00</div><p>Closing balance · Net change −₹14,934.62</p></div>
+      <div class="compare-box"><div class="month">August 2026</div><div class="big" data-target="1635036.94">₹0.00</div><p>Closing balance · Net change +₹1,81,812.84</p></div>
     </div>
   </section>
 </main>
 
-<footer class="footer">🏢 SS Snowdrop Apartment Allottees Welfare Association · All amounts in INR · 2026</footer>
+<footer class="footer" id="footer">🏢 SS Snowdrop Apartment Allottees Welfare Association · All amounts in INR · 2026</footer>
 </div>
 
 <script>
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const data={
 june:{
  title:"June 2026",period:"01 June 2026 — 30 June 2026",opening:"₹15,10,255.88",income:"₹5,02,000.00",expense:"₹5,44,097.16",net:"−₹42,097.16",closing:"₹14,68,158.72",txn:"118 credits · 23 debits",
@@ -182,57 +297,213 @@ august:{
 }
 };
 
+const trend=[
+  {label:"Jun",value:1468158.72},
+  {label:"Jul",value:1453224.10},
+  {label:"Aug",value:1635036.94}
+];
+
 function moneyClass(v){return v.includes("−")||v.startsWith("−")?"red":"green"}
-function render(month){
- const d=data[month];
- const top=d.expenses.slice(0,5);
- const topTotal=top.reduce((s,x)=>s+parseFloat(x[1].replace(/[₹,]/g,"")),0);
- const pct=(topTotal/parseFloat(d.expense.replace(/[₹,]/g,""))*100).toFixed(1);
- document.getElementById("report").innerHTML=`
-  <div class="report-head">
-    <div><div class="eyebrow" style="color:#6b8191">${d.period}</div><h2>${d.title} Financial Report</h2><p>Bank Statement Analysis · Account No. ##############</p></div>
-    <div class="actions"><button class="action" onclick="window.print()">🖨 Print / PDF</button></div>
-  </div>
-  <div class="cards">
-    <div class="card"><div class="metric-label">Opening Balance</div><div class="metric">${d.opening}</div></div>
-    <div class="card"><div class="metric-label">Total Income</div><div class="metric green">${d.income}</div></div>
-    <div class="card"><div class="metric-label">Total Expenses</div><div class="metric red">${d.expense}</div></div>
-    <div class="card"><div class="metric-label">Net Change</div><div class="metric ${moneyClass(d.net)}">${d.net}</div></div>
-    <div class="card"><div class="metric-label">Closing Balance</div><div class="metric gold">${d.closing}</div></div>
-  </div>
-  <div class="grid">
-    <section class="panel">
-      <div class="panel-title">Executive Summary <span>${d.txn}</span></div>
-      <div class="panel-body">
-        <div class="summary">${d.summary}</div>
-        <div class="notice">✓ ${d.note}</div>
-      </div>
-    </section>
-    <section class="panel">
-      <div class="panel-title">Top 5 Largest Expenses <span>${pct}% of total</span></div>
-      <div class="panel-body">
-        ${top.map((x,i)=>`<div class="expense"><div><div class="expense-name">${i+1}. ${x[0]}</div><small>${x[2]}</small><div class="progress"><i style="width:${Math.min(100,(parseFloat(x[1].replace(/[₹,]/g,""))/parseFloat(d.expense.replace(/[₹,]/g,"")))*100*2.7)}%"></i></div></div><div class="expense-amount">${x[1]}</div></div>`).join("")}
-      </div>
-    </section>
-  </div>
-  <div class="grid">
-    <section class="panel">
-      <div class="panel-title">Amount Received — By Source</div>
-      <div class="panel-body"><table><thead><tr><th>Source / Name</th><th class="num">Txns</th><th class="num">Total</th><th class="num">Share</th></tr></thead><tbody>
-      ${d.incomeRows.map((r,i)=>`<tr class="${i===d.incomeRows.length-1?'total':''}"><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td><td class="num">${r[3]}</td></tr>`).join("")}
-      </tbody></table></div>
-    </section>
-    <section class="panel">
-      <div class="panel-title">Expenses — By Vendor / Payee</div>
-      <div class="panel-body"><table><thead><tr><th>Vendor / Payee</th><th class="num">Total Paid</th><th>Type</th></tr></thead><tbody>
-      ${d.expenses.map(r=>`<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td>${r[2]}</td></tr>`).join("")}
-      </tbody></table></div>
-    </section>
-  </div>`;
- document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.month===month));
+function parseMoney(str){
+  const neg = str.indexOf("−")!==-1 || str.trim().startsWith("-");
+  const num = parseFloat(String(str).replace(/[₹,+−\s]/g,""));
+  return neg ? -num : num;
 }
+function fmtINR(abs){
+  return abs.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function animateNumber(el,endVal,opts){
+  opts=opts||{};
+  const showSign=!!opts.showSign;
+  const duration=opts.duration||1100;
+  const prefix = showSign ? (endVal<0?"−":(endVal>0?"+":"")) : "";
+  if(reduced){
+    el.textContent=prefix+"₹"+fmtINR(Math.abs(endVal));
+    return;
+  }
+  const start=0;
+  let startTime=null;
+  function step(ts){
+    if(!startTime)startTime=ts;
+    const p=Math.min((ts-startTime)/duration,1);
+    const eased=1-Math.pow(1-p,3);
+    const val=start+(endVal-start)*eased;
+    el.textContent=prefix+"₹"+fmtINR(Math.abs(val));
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function buildTrend(){
+  const w=680,h=190,padX=54,padTop=30,padBottom=32;
+  const vals=trend.map(t=>t.value);
+  const min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+  const range=(max-min)||1;
+  const usableH=h-padTop-padBottom;
+  const stepX=(w-padX*2)/(trend.length-1);
+  const pts=trend.map((t,i)=>{
+    const x=padX+i*stepX;
+    const y=padTop+usableH-((t.value-min)/range)*usableH;
+    return {x:x,y:y,label:t.label,value:t.value};
+  });
+  const linePath=pts.map((p,i)=>(i===0?"M":"L")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
+  const areaPath=linePath+" L"+pts[pts.length-1].x.toFixed(1)+" "+(h-padBottom)+" L"+pts[0].x.toFixed(1)+" "+(h-padBottom)+" Z";
+  let length=0;
+  for(let i=1;i<pts.length;i++){length+=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);}
+  const circles=pts.map((p,i)=>'<circle class="trend-dot" style="animation-delay:'+(0.9+i*0.15).toFixed(2)+'s" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="5"></circle>').join("");
+  const labels=pts.map(p=>'<text x="'+p.x.toFixed(1)+'" y="'+(h-10)+'" class="trend-label" text-anchor="middle">'+p.label+' 2026</text>').join("");
+  const valueLabels=pts.map(p=>'<text x="'+p.x.toFixed(1)+'" y="'+(p.y-14).toFixed(1)+'" class="trend-value" text-anchor="middle">₹'+(p.value/100000).toFixed(2)+'L</text>').join("");
+  const dashInit = reduced ? 0 : length;
+  return '<svg viewBox="0 0 '+w+' '+h+'" class="trend-svg" role="img" aria-label="Closing balance trend, June to August 2026">'
+    +'<defs><linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">'
+    +'<stop offset="0%" stop-color="#1769aa" stop-opacity=".28"/>'
+    +'<stop offset="100%" stop-color="#1769aa" stop-opacity="0"/></linearGradient></defs>'
+    +'<path d="'+areaPath+'" fill="url(#trendFill)" class="trend-area"></path>'
+    +'<path d="'+linePath+'" class="trend-line" id="trendLinePath" style="stroke-dasharray:'+length.toFixed(1)+';stroke-dashoffset:'+dashInit.toFixed(1)+'"></path>'
+    +circles+labels+valueLabels
+    +'</svg>';
+}
+
+function positionIndicator(activeBtn){
+  const indicator=document.getElementById("tabIndicator");
+  const selector=document.getElementById("selector");
+  if(!activeBtn||!indicator)return;
+  const sBox=selector.getBoundingClientRect();
+  const bBox=activeBtn.getBoundingClientRect();
+  indicator.style.width=bBox.width+"px";
+  indicator.style.transform="translateX("+(bBox.left-sBox.left)+"px)";
+}
+
+function render(month,skipAnim){
+  const d=data[month];
+  const top=d.expenses.slice(0,5);
+  const expenseTotalNum=parseMoney(d.expense);
+  const topTotal=top.reduce((s,x)=>s+parseMoney(x[1]),0);
+  const pct=(topTotal/expenseTotalNum*100).toFixed(1);
+  const reportEl=document.getElementById("report");
+
+  reportEl.innerHTML=
+   '<div class="report-head">'
+    +'<div><div class="eyebrow" style="color:#6b8191">'+d.period+'</div><h2>'+d.title+' Financial Report</h2><p>Bank Statement Analysis · Account No. ##############</p></div>'
+    +'<div class="actions"><button class="action" onclick="window.print()">🖨 Print / PDF</button></div>'
+   +'</div>'
+   +'<div class="cards">'
+    +'<div class="card"><div class="metric-label">Opening Balance</div><div class="metric" data-money="'+d.opening+'">₹0.00</div></div>'
+    +'<div class="card"><div class="metric-label">Total Income</div><div class="metric green" data-money="'+d.income+'">₹0.00</div></div>'
+    +'<div class="card"><div class="metric-label">Total Expenses</div><div class="metric red" data-money="'+d.expense+'">₹0.00</div></div>'
+    +'<div class="card"><div class="metric-label">Net Change</div><div class="metric '+moneyClass(d.net)+'" data-money="'+d.net+'" data-sign="1">₹0.00</div></div>'
+    +'<div class="card"><div class="metric-label">Closing Balance</div><div class="metric gold" data-money="'+d.closing+'">₹0.00</div></div>'
+   +'</div>'
+   +'<div class="grid">'
+    +'<section class="panel" data-reveal>'
+      +'<div class="panel-title">Executive Summary <span>'+d.txn+'</span></div>'
+      +'<div class="panel-body">'
+        +'<div class="summary">'+d.summary+'</div>'
+        +'<div class="notice">✓ '+d.note+'</div>'
+      +'</div>'
+    +'</section>'
+    +'<section class="panel" data-reveal>'
+      +'<div class="panel-title">Top 5 Largest Expenses <span>'+pct+'% of total</span></div>'
+      +'<div class="panel-body">'
+        +top.map((x,i)=>{
+          const w=Math.min(100,(parseMoney(x[1])/expenseTotalNum)*100*2.7);
+          return '<div class="expense"><div><div class="expense-name">'+(i+1)+'. '+x[0]+'</div><small>'+x[2]+'</small><div class="progress"><i data-width="'+w.toFixed(1)+'"></i></div></div><div class="expense-amount">'+x[1]+'</div></div>';
+        }).join("")
+      +'</div>'
+    +'</section>'
+   +'</div>'
+   +'<div class="grid">'
+    +'<section class="panel" data-reveal>'
+      +'<div class="panel-title">Amount Received — By Source</div>'
+      +'<div class="panel-body"><div class="table-scroll"><table><thead><tr><th>Source / Name</th><th class="num">Txns</th><th class="num">Total</th><th class="num">Share</th></tr></thead><tbody>'
+      +d.incomeRows.map((r,i)=>'<tr class="'+(i===d.incomeRows.length-1?'total':'')+'"><td>'+r[0]+'</td><td class="num">'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="num">'+r[3]+'</td></tr>').join("")
+      +'</tbody></table></div></div>'
+    +'</section>'
+    +'<section class="panel" data-reveal>'
+      +'<div class="panel-title">Expenses — By Vendor / Payee</div>'
+      +'<div class="panel-body"><div class="table-scroll"><table><thead><tr><th>Vendor / Payee</th><th class="num">Total Paid</th><th>Type</th></tr></thead><tbody>'
+      +d.expenses.map(r=>'<tr><td>'+r[0]+'</td><td class="num">'+r[1]+'</td><td>'+r[2]+'</td></tr>').join("")
+      +'</tbody></table></div></div>'
+    +'</section>'
+   +'</div>';
+
+  if(!skipAnim){
+    reportEl.classList.remove("enter");
+    void reportEl.offsetWidth;
+    reportEl.classList.add("enter");
+  }
+
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.month===month));
+  document.querySelectorAll(".mini-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.month===month));
+  positionIndicator(document.querySelector('.tab[data-month="'+month+'"]'));
+
+  reportEl.querySelectorAll(".metric[data-money]").forEach(el=>{
+    const val=parseMoney(el.dataset.money);
+    animateNumber(el,val,{showSign:el.dataset.sign==="1"});
+  });
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    reportEl.querySelectorAll(".progress i").forEach((el,i)=>{
+      el.style.transitionDelay=(i*90)+"ms";
+      el.style.width=el.dataset.width+"%";
+    });
+  }));
+
+  reportEl.querySelectorAll("[data-reveal]").forEach((el,i)=>{
+    el.style.transitionDelay=(i*90)+"ms";
+    panelObserver.observe(el);
+  });
+}
+
+const panelObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("revealed");
+      panelObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:0.15});
+
+document.getElementById("trendWrap").innerHTML=buildTrend();
+document.querySelectorAll(".panel.comparison, #footer").forEach(el=>panelObserver.observe(el));
+
+document.getElementById("trendPanel").addEventListener("transitionend",()=>{},{once:true});
+const trendObserverTarget=document.getElementById("trendPanel");
+new IntersectionObserver((entries,obs)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("revealed");
+      const line=document.getElementById("trendLinePath");
+      if(line && !reduced){ requestAnimationFrame(()=>{ line.style.transitionProperty="stroke-dashoffset"; line.style.transitionDuration="1.4s"; line.style.transitionTimingFunction="cubic-bezier(.16,.8,.28,1)"; line.style.strokeDashoffset="0"; }); }
+      document.querySelectorAll(".compare-box .big").forEach(el=>{
+        animateNumber(el, parseFloat(el.dataset.target), {duration:1300});
+      });
+      obs.unobserve(entry.target);
+    }
+  });
+},{threshold:0.2}).observe(trendObserverTarget);
+
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>render(b.dataset.month)));
-render("june");
+document.querySelectorAll(".mini-tabs button").forEach(b=>b.addEventListener("click",()=>{
+  render(b.dataset.month);
+  document.getElementById("selector").scrollIntoView({behavior: reduced?"auto":"smooth",block:"start"});
+}));
+
+let miniShown=false;
+function onScroll(){
+  const y=window.scrollY||document.documentElement.scrollTop;
+  const shouldShow=y>420;
+  if(shouldShow!==miniShown){
+    miniShown=shouldShow;
+    document.getElementById("miniNav").classList.toggle("show",shouldShow);
+  }
+}
+window.addEventListener("scroll",onScroll,{passive:true});
+window.addEventListener("resize",()=>positionIndicator(document.querySelector(".tab.active")));
+
+render("june",true);
+requestAnimationFrame(()=>positionIndicator(document.querySelector(".tab.active")));
 </script>
 </body>
 </html>
