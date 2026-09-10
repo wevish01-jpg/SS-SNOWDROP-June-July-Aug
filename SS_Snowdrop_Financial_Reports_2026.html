@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SS Snowdrop | Financial Reports 2026</title>
+<style>
+:root{
+  --bg:#f4f7fb;--surface:#fff;--text:#102a43;--muted:#66788a;
+  --primary:#1769aa;--primary2:#0b4779;--line:#dce6ef;
+  --green:#16845b;--red:#c43d4b;--gold:#d98b16;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+button{font:inherit}
+.app{min-height:100vh}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#092f54 0%,#0d5689 55%,#1594b8 100%);color:#fff;padding:34px 6vw 70px}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero:before{width:430px;height:430px;right:-120px;top:-220px}.hero:after{width:280px;height:280px;left:-140px;bottom:-170px}
+.nav{position:relative;z-index:2;max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:13px;align-items:center;font-weight:850;letter-spacing:.2px}
+.brand-icon{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:25px;border:1px solid rgba(255,255,255,.2)}
+.badge{font-size:12px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+.hero-inner{position:relative;z-index:2;max-width:1280px;margin:62px auto 0}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:800;opacity:.75}
+h1{font-size:clamp(34px,5vw,65px);line-height:1.02;margin:12px 0 17px;max-width:820px;letter-spacing:-2px}
+.hero p{max-width:720px;font-size:17px;line-height:1.7;color:rgba(255,255,255,.82);margin:0}
+.hero-stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-stat{padding:11px 15px;border-radius:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:13px}
+.hero-stat strong{display:block;font-size:16px;color:#fff}
+.main{max-width:1280px;margin:-35px auto 0;padding:0 22px 60px;position:relative;z-index:3}
+.selector{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:9px;display:flex;gap:8px;box-shadow:0 18px 45px rgba(20,53,80,.12);flex-wrap:wrap}
+.tab{flex:1;min-width:150px;border:0;background:transparent;color:#557087;padding:15px 17px;border-radius:15px;cursor:pointer;font-weight:800;transition:.2s}
+.tab:hover{background:#f0f6fa}.tab.active{background:#0d5d91;color:#fff;box-shadow:0 8px 20px rgba(13,93,145,.2)}
+.report{margin-top:22px;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.report-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:30px 2px 18px}
+.report-head h2{font-size:31px;margin:0 0 6px;letter-spacing:-.7px}
+.report-head p{margin:0;color:var(--muted)}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.action{border:1px solid var(--line);background:#fff;color:#194d73;padding:10px 14px;border-radius:11px;cursor:pointer;font-weight:750}
+.action:hover{background:#f4f8fb}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 7px 24px rgba(23,55,80,.05)}
+.metric-label{font-size:12px;color:var(--muted);font-weight:750;text-transform:uppercase;letter-spacing:.35px}
+.metric{font-size:21px;font-weight:900;margin-top:8px;color:#114c75}
+.metric.green{color:var(--green)}.metric.red{color:var(--red)}.metric.gold{color:var(--gold)}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-top:16px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 7px 24px rgba(23,55,80,.05)}
+.panel-title{padding:15px 18px;font-weight:850;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.panel-title span{font-size:12px;color:var(--muted);font-weight:650}
+.panel-body{padding:18px}
+.summary{line-height:1.7;color:#486174;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:11px 10px;border-bottom:1px solid #edf2f6}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#698092;background:#f8fafc}
+td.num{text-align:right;white-space:nowrap;font-weight:750}
+tr:last-child td{border-bottom:0}.total td{font-weight:900;background:#f4f9fc}
+.progress{height:7px;background:#e9eff4;border-radius:99px;overflow:hidden;margin-top:7px}.progress i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#1769aa,#17a1bd)}
+.expense{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:12px 0;border-bottom:1px solid #edf2f6}.expense:last-child{border:0}
+.expense-name{font-weight:750}.expense-amount{font-weight:900;color:#b84442}.expense small{color:var(--muted)}
+.notice{margin-top:14px;padding:13px 14px;background:#eef8f5;border:1px solid #cceadd;border-radius:12px;color:#276550;font-size:12px;line-height:1.5}
+.comparison{margin-top:16px}
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;padding:18px}
+.compare-box{padding:17px;border-radius:14px;background:#f7fafc;border:1px solid var(--line)}
+.compare-box .month{font-weight:900;color:#15567e}.compare-box .big{font-size:23px;font-weight:900;margin:8px 0}.compare-box p{margin:0;color:var(--muted);font-size:12px}
+.footer{text-align:center;color:#75899a;font-size:12px;padding:30px 10px}
+.empty{padding:55px;text-align:center;color:var(--muted)}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:700px){.hero{padding:24px 20px 60px}.hero-inner{margin-top:45px}.main{padding:0 12px 40px}.cards{grid-template-columns:1fr 1fr}.report-head{align-items:start;flex-direction:column}.selector{border-radius:18px}.tab{min-width:0}.compare-grid{grid-template-columns:1fr}}
+@media(max-width:460px){.cards{grid-template-columns:1fr}.brand .name{display:none}.hero p{font-size:15px}}
+@media print{.hero{padding:20px;color:#000;background:#fff}.hero p{color:#444}.selector,.actions{display:none}.main{margin:0}.report{display:block}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <nav class="nav">
+    <div class="brand"><div class="brand-icon">🏢</div><div class="name">SS SNOWDROP</div></div>
+    <div class="badge">Financial Reports · 2026</div>
+  </nav>
+  <div class="hero-inner">
+    <div class="eyebrow">Association Financial Dashboard</div>
+    <h1>Clear finances.<br>Stronger community.</h1>
+    <p>Monthly bank statement analysis for SS Snowdrop Apartment Allottees Welfare Association. Select a month below to view a clean, detailed financial report.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>Jun · Jul · Aug</strong>2026 reports</div>
+      <div class="hero-stat"><strong>₹16.35L</strong>August closing balance</div>
+      <div class="hero-stat"><strong>114 flats</strong>August collection base</div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="selector" role="tablist" aria-label="Monthly reports">
+    <button class="tab active" data-month="june">June 2026</button>
+    <button class="tab" data-month="july">July 2026</button>
+    <button class="tab" data-month="august">August 2026</button>
+  </div>
+  <div id="report" class="report"></div>
+
+  <section class="panel comparison">
+    <div class="panel-title">Three-month snapshot <span>June → August 2026</span></div>
+    <div class="compare-grid">
+      <div class="compare-box"><div class="month">June 2026</div><div class="big">₹14,68,158.72</div><p>Closing balance · Net change −₹42,097.16</p></div>
+      <div class="compare-box"><div class="month">July 2026</div><div class="big">₹14,53,224.10</div><p>Closing balance · Net change −₹14,934.62</p></div>
+      <div class="compare-box"><div class="month">August 2026</div><div class="big">₹16,35,036.94</div><p>Closing balance · Net change +₹1,81,812.84</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">🏢 SS Snowdrop Apartment Allottees Welfare Association · All amounts in INR · 2026</footer>
+</div>
+
+<script>
+const data={
+june:{
+ title:"June 2026",period:"01 June 2026 — 30 June 2026",opening:"₹15,10,255.88",income:"₹5,02,000.00",expense:"₹5,44,097.16",net:"−₹42,097.16",closing:"₹14,68,158.72",txn:"118 credits · 23 debits",
+ summary:"The June statement records 141 transactions. Apartment maintenance collections through NoBroker were the dominant source of receipts, while security, individual payouts, internal transfers and electricity were the main expense areas.",
+ incomeRows:[
+ ["Apartment Maintenance Collections (via NoBroker)","115","₹4,86,500.00","96.9%"],
+ ["R ASHWIN KUMAR — Corpus","1","₹8,000.00","1.6%"],
+ ["ADONMO PRIVATE LIMITED","1","₹4,000.00","0.8%"],
+ ["SALMAN S — UPI payment","1","₹3,500.00","0.7%"],
+ ["TOTAL RECEIVED","118","₹5,02,000.00","100%"]
+ ],
+ expenses:[
+ ["BULLS INDIA SECURITA","₹1,53,646.00","Security"],
+ ["CHANDRA SHEKAR REDDY","₹89,900.00","Vendor / payout"],
+ ["Hemanth — Internal Transfer","₹1,20,023.00","9 transactions"],
+ ["Mahendra kumar r","₹39,300.00","Vendor / payout"],
+ ["HEMANTH KUMAR KUMAR N","₹33,000.00","Vendor / payout"],
+ ["SHRI ROYAL TARPAULINS","₹25,760.00","Maintenance / material"],
+ ["BESCOM — Electricity","₹47,497.16","4 transactions"]
+ ],
+ note:"June reconciliation: ₹15,10,255.88 + ₹5,02,000.00 − ₹5,44,097.16 = ₹14,68,158.72."
+},
+july:{
+ title:"July 2026",period:"01 July 2026 — 31 July 2026",opening:"₹14,68,158.72",income:"₹4,97,076.00",expense:"₹5,12,010.62",net:"−₹14,934.62",closing:"₹14,53,224.10",txn:"120 credits · 15 debits",
+ summary:"July opened with the June closing balance and ended with a smaller net decrease. Maintenance collections through NoBroker remained the principal source of income, while security, payouts, electricity, elevator maintenance and internal transfers formed the major expenses.",
+ incomeRows:[
+ ["Apartment Maintenance Collections (via NoBroker)","115","₹4,75,900.00","95.7%"],
+ ["Interest paid by Axis Bank","1","₹9,451.00","1.9%"],
+ ["ADONMO PRIVATE LIMITED","1","₹4,000.00","0.8%"],
+ ["CASHFREE / IMPS","1","₹3,000.00","0.6%"],
+ ["ANKITH JA — UPI payment","1","₹3,000.00","0.6%"],
+ ["VIPIN JAI — IMPS","1","₹1,725.00","0.3%"],
+ ["TOTAL RECEIVED","120","₹4,97,076.00","100%"]
+ ],
+ expenses:[
+ ["BULLS INDIA SECURITA","₹1,56,142.00","Security"],
+ ["CHANDRA SHEKAR REDDY","₹88,000.00","Vendor / payout"],
+ ["Hemanth — Internal Transfer","₹1,13,000.00","3 transactions"],
+ ["HEMANTH KUMAR KUMAR N","₹33,000.00","Vendor / payout"],
+ ["Mahendra kumar r","₹32,750.00","Vendor / payout"],
+ ["OTIS ELEVATOR COMPANY","₹32,814.00","Elevator maintenance"],
+ ["BESCOM — Electricity","₹32,047.62","3 transactions"]
+ ],
+ note:"July reconciliation: ₹14,68,158.72 + ₹4,97,076.00 − ₹5,12,010.62 = ₹14,53,224.10."
+},
+august:{
+ title:"August 2026",period:"01 August 2026 — 31 August 2026",opening:"₹14,53,224.10",income:"₹7,26,799.00",expense:"₹5,44,986.16",net:"+₹1,81,812.84",closing:"₹16,35,036.94",txn:"194 credits · 22 debits",
+ summary:"August generated a strong net surplus of ₹1,81,812.84. Almost all receipts came from apartment maintenance collections through NoBroker, while the largest expenses were security, electricity and individual payouts.",
+ incomeRows:[
+ ["Apartment Maintenance Collections (via NoBroker — 114 flats)","191","₹6,99,624.00","96.3%"],
+ ["CHANDRA SHEKARB","1","₹20,175.00","2.8%"],
+ ["ADONMO PRIVATE LIMITED","1","₹4,000.00","0.6%"],
+ ["BISANI SIVAKRIS","1","₹3,000.00","0.4%"],
+ ["TOTAL RECEIVED","194","₹7,26,799.00","100%"]
+ ],
+ expenses:[
+ ["BULLS INDIA SECURITA","₹1,56,773.00","Security"],
+ ["BESCOM — Electricity","₹86,644.16","4 transactions"],
+ ["DURYODHAN SAHOO","₹60,330.00","Individual payout"],
+ ["CHANDRA SHEKAR REDDY","₹54,720.00","Individual payout"],
+ ["PRAKASH V","₹45,682.00","4 transactions"],
+ ["HEMANTH KUMAR KUMAR N","₹34,200.00","Individual payout"],
+ ["Hemanth — Internal Transfer","₹25,000.00","Transfer"]
+ ],
+ note:"August reconciliation: ₹14,53,224.10 + ₹7,26,799.00 − ₹5,44,986.16 = ₹16,35,036.94."
+}
+};
+
+function moneyClass(v){return v.includes("−")||v.startsWith("−")?"red":"green"}
+function render(month){
+ const d=data[month];
+ const top=d.expenses.slice(0,5);
+ const topTotal=top.reduce((s,x)=>s+parseFloat(x[1].replace(/[₹,]/g,"")),0);
+ const pct=(topTotal/parseFloat(d.expense.replace(/[₹,]/g,""))*100).toFixed(1);
+ document.getElementById("report").innerHTML=`
+  <div class="report-head">
+    <div><div class="eyebrow" style="color:#6b8191">${d.period}</div><h2>${d.title} Financial Report</h2><p>Bank Statement Analysis · Account No. ##############</p></div>
+    <div class="actions"><button class="action" onclick="window.print()">🖨 Print / PDF</button></div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="metric-label">Opening Balance</div><div class="metric">${d.opening}</div></div>
+    <div class="card"><div class="metric-label">Total Income</div><div class="metric green">${d.income}</div></div>
+    <div class="card"><div class="metric-label">Total Expenses</div><div class="metric red">${d.expense}</div></div>
+    <div class="card"><div class="metric-label">Net Change</div><div class="metric ${moneyClass(d.net)}">${d.net}</div></div>
+    <div class="card"><div class="metric-label">Closing Balance</div><div class="metric gold">${d.closing}</div></div>
+  </div>
+  <div class="grid">
+    <section class="panel">
+      <div class="panel-title">Executive Summary <span>${d.txn}</span></div>
+      <div class="panel-body">
+        <div class="summary">${d.summary}</div>
+        <div class="notice">✓ ${d.note}</div>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-title">Top 5 Largest Expenses <span>${pct}% of total</span></div>
+      <div class="panel-body">
+        ${top.map((x,i)=>`<div class="expense"><div><div class="expense-name">${i+1}. ${x[0]}</div><small>${x[2]}</small><div class="progress"><i style="width:${Math.min(100,(parseFloat(x[1].replace(/[₹,]/g,""))/parseFloat(d.expense.replace(/[₹,]/g,"")))*100*2.7)}%"></i></div></div><div class="expense-amount">${x[1]}</div></div>`).join("")}
+      </div>
+    </section>
+  </div>
+  <div class="grid">
+    <section class="panel">
+      <div class="panel-title">Amount Received — By Source</div>
+      <div class="panel-body"><table><thead><tr><th>Source / Name</th><th class="num">Txns</th><th class="num">Total</th><th class="num">Share</th></tr></thead><tbody>
+      ${d.incomeRows.map((r,i)=>`<tr class="${i===d.incomeRows.length-1?'total':''}"><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td><td class="num">${r[3]}</td></tr>`).join("")}
+      </tbody></table></div>
+    </section>
+    <section class="panel">
+      <div class="panel-title">Expenses — By Vendor / Payee</div>
+      <div class="panel-body"><table><thead><tr><th>Vendor / Payee</th><th class="num">Total Paid</th><th>Type</th></tr></thead><tbody>
+      ${d.expenses.map(r=>`<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td>${r[2]}</td></tr>`).join("")}
+      </tbody></table></div>
+    </section>
+  </div>`;
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.month===month));
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>render(b.dataset.month)));
+render("june");
+</script>
+</body>
+</html>
